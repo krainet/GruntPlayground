@@ -8,6 +8,9 @@ grunt.initConfig({
     default:{},
     ninja: {
         movements: ['hadooken', 'sor-yukeen', 'k.o']
+    },
+    coche: {
+        llaves: 'llaveCoche'
     }
 });
 
@@ -64,6 +67,38 @@ grunt.registerTask('task_fail_async', 'Mi fallo "A"sincrono', function() {
     }, 2000);
 });
 
+
+//Tarea dependiente de otra
+//Si ejecutamos arrancar coche sin ponergasolina , no funcionará la task
+//Si no hay gasolina en la gasolinera, tampoco arrancará
+//Si no existieran las llaves , no podriamos arrancar
+grunt.registerTask('ponergasolina', 'Poner gasolina en coche', function() {
+    var result=Math.random() < 0.5 ? true : false;
+    grunt.log.writeln('Result has : ' + result);
+    if(!result){
+        grunt.log.writeln('No habia gasolina en repsol!');
+    }else{
+        grunt.log.writeln('Deposito lleno!');
+    }
+    return result;
+});
+
+grunt.registerTask('arrancarcoche', 'Arrancar coche', function() {
+    // Si no tengo gasolina, no arranca el coche!
+    grunt.task.requires('ponergasolina');
+
+    // Si no tengo llave (grunt.config) tampoco podré arrancar
+    grunt.log.writeln('Tengo llaves? '+grunt.config.get('coche').llaves);
+
+    //Test run
+    grunt.config.requires('coche.llaves');
+    
+    //Test fail
+    //grunt.config.requires('coche.llaves');
+
+    // Si tengo gasolina, arranco
+    grunt.log.writeln('Rum rum! coche arrancado.');
+});
 
 
 
