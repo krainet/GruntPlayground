@@ -49,6 +49,21 @@ grunt.registerTask('task_async', 'Tarea "asincrona" task.', function() {
     }, 2000);
 });
 
+//Tarea fallando sincronamente
+grunt.registerTask('task_fail_sync', 'Mi fallo sincrono', function() {
+    // Fallo sincrono.
+    return false;
+});
+
+//Tarea fallando "A"sincronamente
+grunt.registerTask('task_fail_async', 'Mi fallo "A"sincrono', function() {
+    var done = this.async();
+    setTimeout(function() {
+        // Fail asynchronously.
+        done(false);
+    }, 2000);
+});
+
 
 
 
