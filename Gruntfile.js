@@ -1,7 +1,7 @@
 var grunt = require('grunt');
 
 grunt.initConfig({
-    multilog:{
+    mi_multitask:{
         task1:[1,2,3],
         task2:['hi','im','ninja']
     },
@@ -12,11 +12,15 @@ grunt.initConfig({
 });
 
 
-grunt.registerTask('world', 'world task description', function(){
+
+
+//Task world (printa hello world)
+grunt.registerTask('hello', 'descripcion hello', function(){
     console.log('hello world');
 });
 
-grunt.registerTask('hello', 'say hello', function(name){
+//Task hello
+grunt.registerTask('helloparam', 'descripcion helloparam', function(name){
     if(!name || !name.length)
         grunt.warn('you need to provide a name.');
 
@@ -25,11 +29,29 @@ grunt.registerTask('hello', 'say hello', function(name){
 });
 
 
-grunt.registerTask('default', ['world', 'hello:ninjas']);
-
-grunt.task.registerMultiTask('multilog', 'Log stuff.', function() {
+//Ejemplo de multi-task
+grunt.task.registerMultiTask('mi_multitask', 'descripcion multitask', function() {
     //Ejecutamos todas las tareas de multilog con grunt
     //Podemos ejecutar solo una task con grunt multilog:task1
     grunt.log.writeln(this.target + ': ' + this.data);
 });
 
+//Ejemplo task asíncrona
+grunt.registerTask('task_async', 'Tarea "asincrona" task.', function() {
+    // Forzamos tarea asyncrona al manejador done()
+    var done = this.async();
+    // Ejecutamos
+    grunt.log.writeln('Processing task...');
+    // Finaliza al ejecutar done();
+    setTimeout(function() {
+        grunt.log.writeln('All done!');
+        done();
+    }, 2000);
+});
+
+
+
+
+
+//Task por defecto (ejecuta task world y task hello con parametro ninjas
+grunt.registerTask('default', ['hello', 'helloparam:ninjas']);
