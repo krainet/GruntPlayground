@@ -120,7 +120,11 @@ grunt.registerTask('probarerror', 'Probar warning y fatal', function() {
     return true;
 });
 
-
+//Grunt log printing
+grunt.registerTask('probarlogcolors', 'Probar log colors', function() {
+    grunt.log.error('Printing in RED');
+    grunt.log.ok('Printing in Green');
+});
 
 
 //Task por defecto (ejecuta task world y task hello con parametro ninjas
