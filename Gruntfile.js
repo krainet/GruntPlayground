@@ -92,12 +92,32 @@ grunt.registerTask('arrancarcoche', 'Arrancar coche', function() {
 
     //Test run
     grunt.config.requires('coche.llaves');
-    
+
     //Test fail
     //grunt.config.requires('coche.llaves');
 
-    // Si tengo gasolina, arranco
+    // Si tengo gasolina y llaves, arranco
     grunt.log.writeln('Rum rum! coche arrancado.');
+});
+
+
+//Error handling
+grunt.registerTask('probarerror', 'Probar warning y fatal', function() {
+    var mayberun=Math.random() < 0.5 ? true : false;
+    var percent=Math.random()*100;
+
+    grunt.log.writeln('Maybe run : ' + mayberun + ' percent: '+percent.toFixed(2)+'%');
+    if(!mayberun){
+        //Gestionamos fatal
+        grunt.fatal('Error fatal no podemos ejecutar');
+    }else{
+        //Gestionamos un WARN
+        if(percent<50){
+            grunt.warn('Porcentaje inferior a 50%');
+        }
+        //Else.. nothing to do , task ended
+    }
+    return true;
 });
 
 
