@@ -20,6 +20,22 @@ grunt.initConfig({
             javascripts: ['javascripts/*.js'],
             stylesheets: ['stylesheets']
         }
+    },
+    //Ejemplo objeto task/multitask
+    multiTaskName: {
+        options: {
+            gzip: false
+        },
+        target1: {
+            src: 'stylesheets/*.css',
+            dest: 'public',
+            ext: '.min.css'
+        },
+        target2: {
+            src: '*.js',
+            dest: 'public',
+            ext: '.min.js'
+        }
     }
 });
 
@@ -166,6 +182,49 @@ grunt.registerTask('concat', 'concatenates files', function(type){
 grunt.registerTask('concatAll', ['concat:templates', 'concat:javascripts', 'concat:stylesheets']);
 
 
-
 //Task por defecto (ejecuta task world y task hello con parametro ninjas
 grunt.registerTask('default', ['hello', 'helloparam:ninjas']);
+
+
+/*
+ Task Object functions
+
+ -   this.async: designed for async tasks. Grunt will normally end the task without waiting for
+ the callback to be executed. If you need Grunt to wait use done().
+
+ -   this.requires: list of taskNames that should executed successfully first.
+ E.g. this.requires(['concat', 'jshint']).
+
+ -   this.name: this is the name of the task. E.g. grunt hello, then this.name === 'name'.
+
+ -   this.args: returns an array with the parameters. E.g. grunt hello:crazy:world,
+ then this.args will return ['crazy', 'world'].
+
+ -   this.options([defaultsObj]): it gets options values from the config.init, optionally you
+ can also pass an object containing the default values. Notice in the example bellow that
+ even though console.log has a this.options({gzip: true}) it gets override by the options
+ parameters. If not one it is specified in the config.init then it will use the default gzip: true.
+
+ /*
+ Multi Task Object
+
+ -   this.target: name of the target current target. If you call it grunt multiTaskName, it will
+ run like multiple tasks calling each target one at a time. this.target will be equal to target1 and then target2.
+
+ -   this.files: return a (single) array that has all the properties for the current target.
+ Take a look the the output above.
+
+ -   this.filesSrc: it expands files and paths against src and return an array with them.
+
+ -   this.data: contains the raw data of the target parameters.
+
+ */
+
+grunt.registerMultiTask('multiTaskName', 'example', function(){
+    console.log('this.options', this.options({gzip: true}));
+    console.log('this.data', this.data);
+    console.log('this.files', this.files);
+    console.log('this.filesSrc', this.filesSrc);
+});
+
+
